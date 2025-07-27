@@ -2,119 +2,170 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WePu - Nền tảng An Toàn Cộng Đồng</title>
-    <!-- Liên kết đến file CSS bên ngoài -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>WePu App</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Thêm thư viện icon Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <!-- 1. Header: Chứa Logo và các liên kết điều hướng -->
-    <header class="main-header">
-        <div class="container">
-            <a href="#" class="logo">WePu</a>
-            <nav class="main-nav">
-                <a href="#dashboard">Bảng Điều Khiển</a>
-                <a href="#community-feed">Cộng Đồng</a>
-                <a href="#report">Gửi Báo Cáo</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- 2. Hero Section: Phần giới thiệu chính -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>Bảo vệ bạn, xây dựng cộng đồng an toàn</h1>
-            <p>Nền tảng chia sẻ và cảnh báo thông tin lừa đảo theo thời gian thực.</p>
-        </div>
-    </section>
-
-    <!-- 3. Dashboard Section: Hiển thị các tính năng chính -->
-    <main id="dashboard" class="dashboard">
-        <div class="container">
-            <h2 class="section-title">Bảng Điều Khiển</h2>
-            <div class="feature-grid">
-                <!-- Tính năng 1: Bản Đồ An Toàn -->
-                <article class="feature-card" data-feature="map">
-                    <div class="card-icon"><i class="fas fa-map-marked-alt"></i></div>
-                    <h3>Bản Đồ An Toàn</h3>
-                    <p>Xem các cảnh báo lừa đảo trực quan trên bản đồ theo vị trí của bạn.</p>
-                </article>
-                <!-- Tính năng 2: Cảnh Báo Thông Minh -->
-                <article class="feature-card" data-feature="alert">
-                    <div class="card-icon"><i class="fas fa-bell"></i></div>
-                    <h3>Cảnh Báo Thông Minh</h3>
-                    <p>Nhận cảnh báo mới nhất từ AI, phân tích dựa trên các báo cáo cộng đồng.</p>
-                </article>
-                <!-- Tính năng 3: Sổ Tay An Ninh -->
-                <article class="feature-card" data-feature="notebook">
-                    <div class="card-icon"><i class="fas fa-book-shield"></i></div>
-                    <h3>Sổ Tay An Ninh</h3>
-                    <p>Lưu lại các cảnh báo quan trọng và quản lý thông tin cá nhân an toàn.</p>
-                </article>
+    <div class="app-container">
+        <!-- Màn hình mô phỏng Android Widget -->
+        <div id="android-homescreen" class="screen">
+            <div class="android-background"></div>
+            <div class="widget-container">
+                <div class="wepu-widget">
+                    <div class="widget-header">
+                        <span>Vệ Binh Đồng</span>
+                        <div class="widget-rank-icon">🛡️</div>
+                    </div>
+                    <div class="widget-exp">
+                        <span>Kinh nghiệm: 150/1000</span>
+                    </div>
+                    <div class="widget-search-bar">
+                        <input type="text" placeholder="Tra cứu số điện thoại...">
+                        <button id="widget-search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div id="widget-alert" class="wepu-widget-alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Cảnh báo chiêu thức lừa đảo mới!</span>
+                </div>
             </div>
         </div>
-    </main>
-    
-    <!-- 4. Community Feed Section -->
-    <section id="community-feed" class="community-feed">
-        <div class="container">
-            <h2 class="section-title">Feed Báo Cáo Cộng Đồng</h2>
+
+        <!-- Màn hình chính (Gọi) -->
+        <div id="call-screen" class="screen active">
+            <div class="call-header">
+                <span>Hy vọng hôm nay bạn không bị làm phiền!</span>
+                <div class="gamification-shield" id="gamification-shield-btn">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Tìm kiếm một số">
+            </div>
+            <div class="exp-bar-container">
+                <div class="exp-label">Cấp bậc: Vệ Binh Đồng</div>
+                <div class="progress-bar">
+                    <div id="exp-progress" class="progress"></div>
+                </div>
+                <div id="exp-text" class="exp-text">150 / 1000 EXP</div>
+            </div>
+            <div class="call-history">
+                <div class="history-item">
+                    <span>0357 233 520</span>
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="history-item">
+                    <span>Huyền Anh Hiếu</span>
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Màn hình Cộng Đồng -->
+        <div id="community-screen" class="screen">
+            <div class="community-header">
+                <h3>WePu Cộng đồng</h3>
+                <p>Phát hiện lừa đảo - Chia sẻ sự thật - Giữ an toàn</p>
+            </div>
             <div class="feed-list">
-                <!-- Báo cáo mẫu 1 -->
                 <div class="feed-item">
-                    <p><strong>Tài khoản "Shop Xinh"</strong> lừa đảo chuyển khoản cọc mua hàng. Mọi người cẩn thận với số điện thoại 09xx.xxx.xxx nhé!</p>
+                    <p>Sáng nay đọc được tin một cô giáo ở Hà Tĩnh vừa bị lừa mất gần 1.5 tỷ đồng...</p>
                     <div class="feed-actions">
-                        <span><i class="fas fa-thumbs-up"></i> 15 Thích</span>
-                        <span><i class="fas fa-comment"></i> 4 Bình luận</span>
-                        <span><i class="fas fa-share"></i> Chia sẻ</span>
+                        <button class="action-btn" data-action="like"><i class="far fa-thumbs-up"></i> Hữu ích (<span>0</span>)</button>
+                        <button class="action-btn" data-action="comment"><i class="far fa-comment"></i> Bình luận (<span>0</span>)</button>
+                        <button class="action-btn" data-action="share"><i class="fas fa-share"></i> Chia sẻ (<span>0</span>)</button>
                     </div>
                 </div>
-                <!-- Báo cáo mẫu 2 -->
-                <div class="feed-item">
-                    <p>Cảnh báo cuộc gọi mạo danh công an yêu cầu cung cấp thông tin cá nhân để "điều tra". Tuyệt đối không làm theo.</p>
+                 <div class="feed-item">
+                    <p>Cảnh báo thủ đoạn mới: Giả danh nhân viên giao hàng yêu cầu chuyển khoản phí vận chuyển để nhận "quà tặng tri ân".</p>
                     <div class="feed-actions">
-                        <span><i class="fas fa-thumbs-up"></i> 32 Thích</span>
-                        <span><i class="fas fa-comment"></i> 9 Bình luận</span>
-                        <span><i class="fas fa-share"></i> Chia sẻ</span>
+                        <button class="action-btn" data-action="like"><i class="far fa-thumbs-up"></i> Hữu ích (<span>0</span>)</button>
+                        <button class="action-btn" data-action="comment"><i class="far fa-comment"></i> Bình luận (<span>0</span>)</button>
+                        <button class="action-btn" data-action="share"><i class="fas fa-share"></i> Chia sẻ (<span>0</span>)</button>
                     </div>
                 </div>
             </div>
+            <button id="safety-map-btn" class="fab"><i class="fas fa-shoe-prints"></i></button>
+            <button id="notebook-btn" class="fab fab-notebook"><i class="fas fa-book"></i></button>
         </div>
-    </section>
 
-    <!-- 5. Report Form Section: Form để người dùng gửi báo cáo -->
-    <section id="report" class="contact">
-        <div class="container">
-            <h2 class="section-title">Gửi Báo Cáo / Góp Ý</h2>
-            <form id="contact-form" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Tiêu đề báo cáo</label>
-                    <input type="text" id="name" name="name" required placeholder="Vd: Lừa đảo việc làm online">
+        <!-- Màn hình Bản đồ an toàn -->
+        <div id="map-screen" class="screen">
+            <div class="map-header">
+                <button class="back-btn" data-target="community-screen"><i class="fas fa-arrow-left"></i></button>
+                <h3>Bản đồ an toàn</h3>
+            </div>
+            <div class="map-container">
+                <!-- Dấu chân được thêm bằng JS -->
+            </div>
+        </div>
+        
+        <!-- Màn hình Sổ tay an ninh -->
+        <div id="notebook-screen" class="screen">
+             <div class="map-header">
+                <button class="back-btn" data-target="community-screen"><i class="fas fa-arrow-left"></i></button>
+                <h3>Sổ tay an ninh</h3>
+            </div>
+            <div id="notebook-list" class="notebook-list">
+                <!-- Các mục đã lưu sẽ được thêm vào đây bằng JS -->
+            </div>
+        </div>
+
+        <!-- Màn hình Gamification -->
+        <div id="gamification-screen" class="screen">
+            <div class="map-header">
+                <button class="back-btn" data-target="call-screen"><i class="fas fa-arrow-left"></i></button>
+                <h3>Nhiệm vụ Vệ Binh</h3>
+            </div>
+            <div class="task-list">
+                <div class="task-item">Báo cáo 1 số điện thoại lừa đảo (+20 EXP)</div>
+                <div class="task-item">Tra cứu 1 số điện thoại bất kỳ (+5 EXP)</div>
+                <div class="task-item">Chia sẻ 1 bài viết trong cộng đồng (+10 EXP)</div>
+            </div>
+        </div>
+
+
+        <!-- Thanh điều hướng dưới cùng -->
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-target="call-screen"><i class="fas fa-phone-alt"></i><span>Gọi</span></button>
+            <button class="nav-btn" data-target="#"><i class="fas fa-comment-dots"></i><span>Tin nhắn</span></button>
+            <button class="nav-btn" data-target="#"><i class="fas fa-shield-alt"></i><span>Chặn</span></button>
+            <button class="nav-btn" data-target="community-screen"><i class="fas fa-users"></i><span>Cộng đồng</span></button>
+        </nav>
+
+        <!-- CÁC POP-UP / MODAL -->
+        <div id="popup-container">
+            <div id="welcome-popup" class="modal">
+                <div class="modal-content">
+                    <i class="fas fa-shield-heart"></i>
+                    <h3>Bảo vệ trong 48 giờ</h3>
+                    <p>Trong 48 giờ qua, WePu đã âm thầm bảo vệ bạn khỏi các số lừa đảo.</p>
+                    <button class="modal-close-btn">Đã hiểu</button>
                 </div>
-                <div class="form-group">
-                    <label for="message">Nội dung chi tiết</label>
-                    <textarea id="message" name="message" rows="5" required placeholder="Mô tả chi tiết về vụ việc, đối tượng, số điện thoại..."></textarea>
+            </div>
+            <div id="after-call-popup" class="modal">
+                <div class="modal-content">
+                    <p>Đó có phải cuộc gọi lừa đảo không?</p>
+                    <button id="report-scam-btn" class="modal-action-btn report">Báo cáo ngay để nhận 20 EXP</button>
+                    <button class="modal-close-btn">Bỏ qua</button>
                 </div>
-                <button type="submit" class="submit-btn">Gửi Báo Cáo</button>
-            </form>
+            </div>
+            <div id="smart-alert-popup" class="modal">
+                 <div class="modal-content">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Cảnh báo chiêu thức lừa đảo mới!</h3>
+                    <p id="alert-content-text">Giả danh nhân viên điện lực yêu cầu đóng tiền phạt qua app.</p>
+                    <button id="save-to-notebook-btn" class="modal-action-btn save">Thêm vào "Sổ tay an ninh"</button>
+                    <button class="modal-close-btn">Đóng</button>
+                </div>
+            </div>
         </div>
-    </section>
-    
-    <!-- 6. Footer: Phần chân trang -->
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 WePu. Vì một cộng đồng an toàn hơn.</p>
-        </div>
-    </footer>
+    </div>
 
-    <!-- Thẻ div ẩn dùng để hiển thị thông báo -->
-    <div id="notification" class="notification"></div>
-
-    <!-- Liên kết đến file JavaScript -->
     <script src="script.js"></script>
-
 </body>
 </html>
