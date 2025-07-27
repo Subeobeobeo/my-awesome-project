@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trải nghiệm ứng dụng WePu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* --- CSS CHO KHUNG ĐIỆN THOẠI --- */
         body {
             background-color: #e9ecef;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -19,7 +21,7 @@
         }
         .phone-wrapper {
             text-align: center;
-            transform: scale(0.95); /* Thu nhỏ một chút để vừa màn hình hơn */
+            transform: scale(0.95);
         }
         .phone-wrapper h1 {
             color: #333;
@@ -27,24 +29,20 @@
             font-weight: 600;
         }
         .phone-frame {
-            width: 414px; /* Kích thước phổ biến hơn */
+            width: 414px;
             height: 896px;
             border: 16px solid black;
             border-radius: 54px;
             box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
             position: relative;
-            background-color: #fff;
+            background-color: #0F0F0F; /* Nền mặc định của app */
         }
         .phone-screen {
             width: 100%;
             height: 100%;
             border-radius: 38px;
             overflow: hidden;
-        }
-        .phone-screen iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+            position: relative;
         }
         .phone-notch {
             position: absolute;
@@ -56,8 +54,118 @@
             background-color: black;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            z-index: 2;
+            z-index: 9999;
         }
+
+        /* --- CSS CHO ỨNG DỤNG WEPU --- */
+        :root {
+            --primary-blue: #448AFF;
+            --dark-bg: #0F0F0F;
+            --dark-surface-1: #1F1F1F;
+            --dark-surface-2: #2D2D2D;
+            --light-bg: #F0F2F5;
+            --light-surface: #FFFFFF;
+            --text-light-primary: #EAEAEA;
+            --text-light-secondary: #A5A5A5;
+            --text-dark: #050505;
+            --yellow-accent: #FFD600;
+            --red-accent: #FF5252;
+        }
+        .app-container { width: 100%; height: 100%; position: relative; overflow: hidden; background-color: var(--dark-bg); color: var(--text-light-primary); }
+        .screen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; transition: opacity 0.2s; padding-bottom: 70px; overflow-y: auto; }
+        .screen.active { opacity: 1; visibility: visible; }
+        .list-container { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .list-item { background-color: var(--light-surface); color: var(--text-dark); padding: 15px; border-radius: 8px; }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background-color: var(--dark-surface-1); border-top: 1px solid var(--dark-surface-2); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-btn { background: none; border: none; color: var(--text-light-secondary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.7rem; cursor: pointer; }
+        .nav-btn i { font-size: 1.4rem; }
+        .nav-btn.active { color: var(--primary-blue); }
+        #call-screen { padding: 15px; background-color: var(--dark-bg); }
+        .call-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .call-header span { font-size: 0.9rem; }
+        .header-icons { display: flex; align-items: center; gap: 15px; }
+        .gamification-shield i { font-size: 1.6rem; color: var(--yellow-accent); cursor: pointer; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-blue); color: white; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        .search-box { background-color: var(--dark-surface-2); border-radius: 25px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .search-box input { background: none; border: none; color: var(--text-light-primary); width: 100%; outline: none; }
+        .quick-actions { display: flex; gap: 10px; margin-bottom: 20px; }
+        .action-chip { background-color: var(--dark-surface-2); color: var(--text-light-primary); border: none; border-radius: 20px; padding: 8px 15px; display: flex; align-items: center; gap: 8px; }
+        .shortcut-card { background-color: var(--dark-surface-1); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .shortcut-card button { background-color: var(--primary-blue); color: white; border: none; border-radius: 20px; padding: 8px 15px; font-weight: bold; }
+        .exp-bar-container { margin-bottom: 20px; }
+        .progress-bar { width: 100%; height: 6px; background-color: var(--dark-surface-2); border-radius: 3px; }
+        .progress { height: 100%; background-color: var(--primary-blue); border-radius: 3px; width: 15%; transition: width 0.5s ease; }
+        .exp-text { display: none; }
+        .history-title { margin-bottom: 10px; font-size: 1rem; }
+        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
+        .item-info { display: flex; align-items: center; gap: 15px; }
+        .item-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
+        .item-icon { color: var(--text-light-secondary); }
+        #community-screen, #message-screen, #block-screen { background-color: var(--light-bg); color: var(--text-dark); }
+        .community-header { padding: 15px; background-color: var(--light-surface); }
+        .community-header h3, .community-header p { margin: 0; }
+        .community-content { padding: 15px; }
+        .report-prompt { background-color: var(--light-surface); padding: 12px; border-radius: 25px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .user-avatar.small { width: 28px; height: 28px; font-size: 0.9rem; }
+        .feed-list { display: flex; flex-direction: column; gap: 10px; }
+        .feed-item { background-color: var(--light-surface); padding: 15px; border-radius: 8px; }
+        .feed-item-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .item-author { display: flex; flex-direction: column; }
+        .item-author strong { font-size: 0.9rem; }
+        .item-author span { font-size: 0.75rem; color: #65676B; }
+        .feed-content { font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; }
+        .feed-actions { margin-top: 10px; display: flex; justify-content: space-around; border-top: 1px solid #EBEDF0; padding-top: 8px; }
+        .action-btn { background: none; border: none; color: #65676B; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 0.8rem; }
+        .fab { position: absolute; bottom: 90px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background-color: var(--primary-blue); color: white; border: none; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 50; }
+        .fab-notebook { bottom: 160px; background-color: var(--yellow-accent); }
+        .page-header.light { display: flex; align-items: center; gap: 15px; padding: 15px; background-color: var(--light-surface); color: var(--text-dark); border-bottom: 1px solid #EBEDF0; }
+        .back-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); }
+        .map-container { width: 100%; height: calc(100% - 57px); background-image: url('https://i.imgur.com/gK6c7w3.png'); background-size: cover; background-position: center; position: relative; }
+        .footprint-icon { position: absolute; font-size: 2rem; color: var(--primary-blue); opacity: 0.8; }
+        .message-list { padding: 10px; }
+        .message-item { display: flex; align-items: center; gap: 15px; padding: 10px; border-radius: 8px; }
+        .message-content { flex-grow: 1; }
+        .message-sender { font-weight: bold; }
+        .message-preview { font-size: 0.9rem; color: #65676B; }
+        .message-time { font-size: 0.8rem; color: #65676B; }
+        .block-content { padding: 15px; }
+        .block-tabs { display: flex; background-color: #E9ECEF; border-radius: 8px; padding: 4px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 8px; border: none; background: none; border-radius: 6px; font-weight: 600; }
+        .tab-btn.active { background-color: var(--light-surface); }
+        .block-card { background: linear-gradient(to right, #5c6bc0, #448aff); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .block-card i { font-size: 2rem; }
+        .block-options { background-color: var(--light-surface); border-radius: 12px; }
+        .option-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #EBEDF0; }
+        .option-item:last-child { border-bottom: none; }
+        .toggle-switch { width: 44px; height: 24px; background-color: #ccc; border-radius: 12px; padding: 2px; cursor: pointer; }
+        .toggle-switch div { width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: transform 0.2s; }
+        .toggle-switch.on { background-color: var(--primary-blue); }
+        .toggle-switch.on div { transform: translateX(20px); }
+        #popup-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; pointer-events: none; }
+        .modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
+        .modal.show { opacity: 1; visibility: visible; pointer-events: auto; }
+        .modal-content { background-color: var(--dark-surface-1); color: var(--text-light-primary); padding: 25px; border-radius: 16px; text-align: center; width: 85%; }
+        .modal-content.dark i { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 15px; }
+        .modal-content i.fa-exclamation-triangle { color: var(--red-accent); }
+        .modal-content i.fa-map-pin { color: var(--yellow-accent); }
+        .modal-content p { margin: 10px 0 20px; }
+        .modal-close-btn { background-color: var(--dark-surface-2); color: var(--text-light-primary); border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+        .modal-action-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .modal-action-btn.report { background-color: var(--yellow-accent); color: #000; }
+        .modal-action-btn.save { background-color: var(--primary-blue); color: #fff; }
+        #android-homescreen { background-color: #ddd; }
+        .android-background { width: 100%; height: 100%; background-image: url('https://i.pinimg.com/736x/2b/88/75/2b8875351608636a2372e50519734f37.jpg'); background-size: cover; filter: blur(2px); opacity: 0.8; }
+        .widget-container { position: absolute; top: 100px; left: 50%; transform: translateX(-50%); width: 90%; }
+        .wepu-widget { background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 15px; border-radius: 20px; color: white; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
+        .widget-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .widget-rank { display: flex; align-items: center; gap: 8px; }
+        .widget-rank-icon { font-size: 1.5rem; }
+        .widget-search-icon { font-size: 1.2rem; cursor: pointer; }
+        .widget-exp { font-size: 0.9rem; margin: 10px 0; opacity: 0.8; }
+        .wepu-widget-alert { display: none; background-color: var(--red-accent); color: white; padding: 15px; border-radius: 20px; font-weight: bold; cursor: pointer; text-align: center; }
+        .wepu-widget-alert.show { display: block; }
+        .android-dock { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background-color: rgba(255,255,255,0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 10px 20px; border-radius: 20px; display: flex; gap: 25px; }
+        .android-dock i { font-size: 1.8rem; color: white; }
     </style>
 </head>
 <body>
@@ -66,10 +174,452 @@
         <div class="phone-frame">
             <div class="phone-notch"></div>
             <div class="phone-screen">
-                <!-- Iframe sẽ tải nội dung từ file app.html -->
-                <iframe src="app.html"></iframe>
+                <!-- NỘI DUNG ỨNG DỤNG BẮT ĐẦU TỪ ĐÂY -->
+                <div class="app-container">
+                    <!-- Màn hình mô phỏng Android Widget -->
+                    <div id="android-homescreen" class="screen">
+                        <div class="android-background"></div>
+                        <div class="widget-container">
+                            <div class="wepu-widget">
+                                <div class="widget-header">
+                                    <div class="widget-rank">
+                                        <div class="widget-rank-icon">🛡️</div>
+                                        <span>Vệ Binh Đồng</span>
+                                    </div>
+                                    <div id="widget-search-btn" class="widget-search-icon"><i class="fas fa-search"></i></div>
+                                </div>
+                                <div class="widget-exp">
+                                    <span>Kinh nghiệm: 150/1000</span>
+                                </div>
+                            </div>
+                            <div id="widget-alert" class="wepu-widget-alert">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Cảnh báo chiêu thức lừa đảo mới</span>
+                            </div>
+                        </div>
+                         <div class="android-dock">
+                            <i class="fas fa-phone"></i>
+                            <i class="fas fa-comment"></i>
+                            <i class="fab fa-chrome"></i>
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+
+                    <!-- Màn hình chính (Gọi) -->
+                    <div id="call-screen" class="screen active">
+                        <div class="call-header">
+                            <span>Hy vọng hôm nay bạn không bị làm phiền!</span>
+                            <div class="header-icons">
+                                <div id="gamification-shield-btn" class="gamification-shield"><i class="fas fa-shield-alt"></i></div>
+                                <div class="user-avatar">Đ</div>
+                            </div>
+                        </div>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Tìm kiếm một số">
+                        </div>
+                        <div class="quick-actions">
+                            <button class="action-chip"><i class="fas fa-address-book"></i> Danh bạ</button>
+                            <button class="action-chip"><i class="fas fa-star"></i> Yêu thích</button>
+                        </div>
+                        <div class="shortcut-card">
+                            <div class="shortcut-info">
+                                <h4>Tạo Lối tắt Điện thoại</h4>
+                                <p>Thực hiện và tìm kiếm cuộc gọi nhanh chóng</p>
+                            </div>
+                            <button>Tạo ngay</button>
+                        </div>
+                        <div class="exp-bar-container">
+                            <div class="progress-bar">
+                                <div id="exp-progress" class="progress"></div>
+                            </div>
+                            <div id="exp-text" class="exp-text">150 / 1000 EXP</div>
+                        </div>
+                        <h4 class="history-title">Gần đây</h4>
+                        <div class="call-history">
+                            <div class="history-item">
+                                <div class="item-info">
+                                    <div class="item-avatar" style="background-color: #6d78de;">H</div>
+                                    <span class="item-name">Huyền Anh Hiếu (2)</span>
+                                </div>
+                                <i class="fas fa-phone-alt item-icon"></i>
+                            </div>
+                            <div class="history-item">
+                                <div class="item-info">
+                                    <div class="item-avatar" style="background-color: #e57373;">L</div>
+                                    <span class="item-name">0901 799 037</span>
+                                </div>
+                                <i class="fas fa-phone-alt item-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Màn hình Tin nhắn -->
+                    <div id="message-screen" class="screen">
+                        <div class="page-header light">
+                            <h3>WePu Tin nhắn</h3>
+                        </div>
+                        <div class="message-list">
+                            <div class="message-item">
+                                <div class="item-avatar" style="background-color: #4fc3f7;">V</div>
+                                <div class="message-content">
+                                    <div class="message-sender">VinaPhone</div>
+                                    <div class="message-preview">(TB) VinaPhone dành riêng cho Quý khách...</div>
+                                </div>
+                                <div class="message-time">T.4</div>
+                            </div>
+                            <div class="message-item">
+                                <div class="item-avatar" style="background-color: #ffb74d;">M</div>
+                                <div class="message-content">
+                                    <div class="message-sender">MOMO</div>
+                                    <div class="message-preview">Bạn có 10.000Đ qua Nạp Điện Thoại...</div>
+                                </div>
+                                <div class="message-time">T.3</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Màn hình Chặn -->
+                    <div id="block-screen" class="screen">
+                        <div class="page-header light">
+                            <h3>WePu Chặn</h3>
+                        </div>
+                        <div class="block-content">
+                            <div class="block-tabs">
+                                <button class="tab-btn active">Mức bảo vệ</button>
+                                <button class="tab-btn">Danh sách chặn</button>
+                            </div>
+                            <div class="block-card">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Bảo vệ tối đa</h4>
+                            </div>
+                            <div class="block-options">
+                                <div class="option-item">
+                                    <span>Chặn top các số điện thoại rác</span>
+                                    <div class="toggle-switch on"><div></div></div>
+                                </div>
+                                 <div class="option-item">
+                                    <span>Chặn số không có trong danh bạ</span>
+                                    <div class="toggle-switch"><div></div></div>
+                                </div>
+                                 <div class="option-item">
+                                    <span>Chặn số từ nước ngoài</span>
+                                    <div class="toggle-switch on"><div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Màn hình Cộng Đồng -->
+                    <div id="community-screen" class="screen">
+                        <div class="community-header">
+                            <h3>WePu Cộng đồng</h3>
+                            <p>Phát hiện lừa đảo - Chia sẻ sự thật - Giữ an toàn</p>
+                        </div>
+                        <div class="community-content">
+                            <div class="report-prompt">
+                                <div class="user-avatar small">Đ</div>
+                                <span>Gần đây bạn có bị làm phiền không?</span>
+                            </div>
+                            <div class="feed-list">
+                                <div class="feed-item">
+                                    <div class="feed-item-header">
+                                        <div class="item-avatar" style="background-color: #4fc3f7;">P</div>
+                                        <div class="item-author">
+                                            <strong>Phạm Minh An</strong>
+                                            <span>1 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <p class="feed-content">Sáng nay đọc được tin một cô giáo ở Hà Tĩnh vừa bị lừa mất gần 1.5 tỷ đồng. Chỉ vì một cuộc gọi tự xưng là nhân viên điện lực, báo chị cài app thanh toán tiền điện...</p>
+                                    <div class="feed-actions">
+                                        <button class="action-btn" data-action="like"><i class="far fa-thumbs-up"></i> Hữu ích (<span>0</span>)</button>
+                                        <button class="action-btn" data-action="comment"><i class="far fa-comment"></i> Bình luận (<span>0</span>)</button>
+                                        <button class="action-btn" data-action="share"><i class="fas fa-share"></i> Chia sẻ (<span>0</span>)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="safety-map-btn" class="fab"><i class="fas fa-shoe-prints"></i></button>
+                        <button id="notebook-btn" class="fab fab-notebook"><i class="fas fa-book"></i></button>
+                    </div>
+
+                    <!-- Màn hình Bản đồ an toàn -->
+                    <div id="map-screen" class="screen">
+                        <div class="page-header light">
+                            <button class="back-btn" data-target="community-screen"><i class="fas fa-arrow-left"></i></button>
+                            <h3>Bản đồ an toàn</h3>
+                        </div>
+                        <div class="map-container"></div>
+                    </div>
+                    
+                    <!-- Màn hình Sổ tay an ninh -->
+                    <div id="notebook-screen" class="screen">
+                         <div class="page-header light">
+                            <button class="back-btn" data-target="community-screen"><i class="fas fa-arrow-left"></i></button>
+                            <h3>Sổ tay an ninh</h3>
+                        </div>
+                        <div id="notebook-list" class="list-container"></div>
+                    </div>
+
+                    <!-- Màn hình Gamification -->
+                    <div id="gamification-screen" class="screen">
+                        <div class="page-header light">
+                            <button class="back-btn" data-target="call-screen"><i class="fas fa-arrow-left"></i></button>
+                            <h3>Nhiệm vụ Vệ Binh</h3>
+                        </div>
+                        <div class="list-container task-list">
+                            <div class="list-item task-item">Báo cáo 1 số điện thoại lừa đảo (+20 EXP)</div>
+                            <div class="list-item task-item">Tra cứu 1 số điện thoại bất kỳ (+5 EXP)</div>
+                            <div class="list-item task-item">Chia sẻ 1 bài viết trong cộng đồng (+10 EXP)</div>
+                        </div>
+                    </div>
+
+                    <!-- Thanh điều hướng dưới cùng -->
+                    <nav class="bottom-nav">
+                        <button class="nav-btn active" data-target="call-screen"><i class="fas fa-phone-alt"></i><span>Gọi</span></button>
+                        <button class="nav-btn" data-target="message-screen"><i class="fas fa-comment-dots"></i><span>Tin nhắn</span></button>
+                        <button class="nav-btn" data-target="block-screen"><i class="fas fa-shield-alt"></i><span>Chặn</span></button>
+                        <button class="nav-btn" data-target="community-screen"><i class="fas fa-users"></i><span>Cộng đồng</span></button>
+                    </nav>
+
+                    <!-- CÁC POP-UP / MODAL -->
+                    <div id="popup-container">
+                        <div id="welcome-popup" class="modal">
+                            <div class="modal-content dark">
+                                <i class="fas fa-shield-heart"></i>
+                                <h3>Bảo vệ trong 48 giờ</h3>
+                                <p>Trong 48 giờ qua, WePu đã âm thầm bảo vệ bạn khỏi các số lừa đảo.</p>
+                                <button class="modal-close-btn">Đã hiểu</button>
+                            </div>
+                        </div>
+                        <div id="after-call-popup" class="modal">
+                            <div class="modal-content dark">
+                                <p>Đó có phải cuộc gọi lừa đảo không?</p>
+                                <button id="report-scam-btn" class="modal-action-btn report">Báo cáo ngay để nhận 20 EXP</button>
+                                <button class="modal-close-btn">Bỏ qua</button>
+                            </div>
+                        </div>
+                        <div id="smart-alert-popup" class="modal">
+                             <div class="modal-content dark">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Cảnh báo chiêu thức lừa đảo mới</h3>
+                                <p id="alert-content-text">Giả danh nhân viên điện lực yêu cầu đóng tiền phạt qua app.</p>
+                                <button id="save-to-notebook-btn" class="modal-action-btn save">Thêm vào "Sổ tay an ninh"</button>
+                                <button class="modal-close-btn">Đóng</button>
+                            </div>
+                        </div>
+                        <div id="area-alert-popup" class="modal">
+                             <div class="modal-content dark">
+                                <i class="fas fa-map-pin"></i>
+                                <h3>Cảnh báo khu vực</h3>
+                                <p>Khu vực bạn đang ở thuộc khu vực có nhiều vụ lừa đảo. Hãy cẩn thận!</p>
+                                <button class="modal-close-btn">Đã hiểu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- NỘI DUNG ỨNG DỤNG KẾT THÚC TẠI ĐÂY -->
             </div>
         </div>
     </div>
+    <script>
+        // --- JAVASCRIPT CHO ỨNG DỤNG WEPU ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- State Management ---
+            const state = {
+                exp: 150,
+                maxExp: 1000,
+                savedAlerts: []
+            };
+
+            // --- DOM Elements ---
+            const screens = document.querySelectorAll('.screen');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const modals = document.querySelectorAll('.modal');
+            const modalCloseButtons = document.querySelectorAll('.modal-close-btn');
+
+            // --- Navigation ---
+            function navigateTo(screenId) {
+                screens.forEach(s => s.classList.remove('active'));
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                }
+                navButtons.forEach(b => {
+                    b.classList.toggle('active', b.dataset.target === screenId);
+                });
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.dataset.target;
+                    if (target && target !== '#') {
+                        navigateTo(target);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.back-btn').forEach(button => {
+                button.addEventListener('click', () => navigateTo(button.dataset.target));
+            });
+
+            // --- Modal/Popup Logic ---
+            function showModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if(modal) modal.classList.add('show');
+            }
+
+            function hideModals() {
+                modals.forEach(m => m.classList.remove('show'));
+            }
+
+            modalCloseButtons.forEach(btn => btn.addEventListener('click', hideModals));
+
+            // --- Gamification & EXP ---
+            const expProgress = document.getElementById('exp-progress');
+            
+            function updateExpBar() {
+                const percentage = (state.exp / state.maxExp) * 100;
+                if(expProgress) expProgress.style.width = `${percentage}%`;
+            }
+
+            function addExp(amount) {
+                state.exp += amount;
+                if (state.exp > state.maxExp) state.exp = state.maxExp;
+                updateExpBar();
+            }
+
+            const reportScamBtn = document.getElementById('report-scam-btn');
+            if(reportScamBtn) {
+                reportScamBtn.addEventListener('click', () => {
+                    hideModals();
+                    addExp(20);
+                    showNotification("Báo cáo thành công! Bạn nhận được 20 EXP.");
+                });
+            }
+            
+            const gamificationShieldBtn = document.getElementById('gamification-shield-btn');
+            if(gamificationShieldBtn) {
+                gamificationShieldBtn.addEventListener('click', () => navigateTo('gamification-screen'));
+            }
+
+            // --- Community Feed Actions ---
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const span = this.querySelector('span');
+                    let count = parseInt(span.textContent.match(/\d+/)[0]);
+                    count = (count === 0) ? 1 : 0; // Toggle between 0 and 1
+                    span.textContent = `(${count})`;
+                });
+            });
+
+            // --- Safety Map ---
+            const mapContainer = document.querySelector('.map-container');
+            const safetyMapBtn = document.getElementById('safety-map-btn');
+            if(safetyMapBtn) {
+                safetyMapBtn.addEventListener('click', () => {
+                    navigateTo('map-screen');
+                    if(mapContainer) {
+                        mapContainer.innerHTML = ''; // Clear old ones
+                        for(let i=0; i<5; i++) {
+                            const icon = document.createElement('i');
+                            icon.className = 'fas fa-shoe-prints footprint-icon';
+                            icon.style.top = `${Math.random() * 80 + 10}%`;
+                            icon.style.left = `${Math.random() * 80 + 10}%`;
+                            mapContainer.appendChild(icon);
+                        }
+                    }
+                });
+            }
+
+            // --- Security Notebook ---
+            const notebookList = document.getElementById('notebook-list');
+            const notebookBtn = document.getElementById('notebook-btn');
+            if(notebookBtn) {
+                notebookBtn.addEventListener('click', () => {
+                    navigateTo('notebook-screen');
+                    renderNotebook();
+                });
+            }
+
+            function renderNotebook() {
+                if(!notebookList) return;
+                notebookList.innerHTML = '';
+                if (state.savedAlerts.length === 0) {
+                    notebookList.innerHTML = '<p class="list-item">Chưa có cảnh báo nào được lưu.</p>';
+                    return;
+                }
+                state.savedAlerts.forEach(alert => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item notebook-item';
+                    item.innerHTML = `<p>${alert.text}</p><div class="time">Lưu lúc: ${alert.time}</div>`;
+                    notebookList.appendChild(item);
+                });
+            }
+
+            const saveToNotebookBtn = document.getElementById('save-to-notebook-btn');
+            if(saveToNotebookBtn) {
+                saveToNotebookBtn.addEventListener('click', () => {
+                    const alertText = document.getElementById('alert-content-text').textContent;
+                    const now = new Date();
+                    state.savedAlerts.push({
+                        text: alertText,
+                        time: now.toLocaleTimeString('vi-VN') + ' ' + now.toLocaleDateString('vi-VN')
+                    });
+                    hideModals();
+                    showNotification("Đã lưu vào Sổ tay an ninh!");
+                });
+            }
+
+            // --- Widget Simulation ---
+            const widgetSearchBtn = document.getElementById('widget-search-btn');
+            if(widgetSearchBtn) {
+                widgetSearchBtn.addEventListener('click', () => {
+                    navigateTo('call-screen');
+                    const searchInput = document.querySelector('#call-screen .search-box input');
+                    if(searchInput) searchInput.focus();
+                });
+            }
+
+            const widgetAlert = document.getElementById('widget-alert');
+            if(widgetAlert) {
+                widgetAlert.addEventListener('click', () => {
+                    navigateTo('call-screen');
+                    showModal('smart-alert-popup');
+                });
+            }
+
+            // --- Initial App Load Logic ---
+            function initializeApp() {
+                navigateTo('android-homescreen');
+                updateExpBar();
+                
+                // Simulate events with timeouts
+                setTimeout(() => { if(widgetAlert) widgetAlert.classList.add('show'); }, 5000);
+                setTimeout(() => showModal('after-call-popup'), 10000);
+                setTimeout(() => showModal('welcome-popup'), 1500);
+                setTimeout(() => showModal('area-alert-popup'), 15000);
+            }
+            
+            // --- General Notification Function ---
+            function showNotification(message) {
+                const notifContainer = document.getElementById('popup-container');
+                if(!notifContainer) return;
+
+                const notifId = `notif-${Date.now()}`;
+                const notif = document.createElement('div');
+                notif.id = notifId;
+                notif.className = 'modal show';
+                notif.style.backgroundColor = 'transparent';
+                notif.innerHTML = `<div class="modal-content dark" style="width: auto; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);">${message}</div>`;
+                notifContainer.appendChild(notif);
+                setTimeout(() => {
+                    document.getElementById(notifId)?.remove();
+                }, 2500);
+            }
+
+            initializeApp();
+        });
+    </script>
 </body>
 </html>
