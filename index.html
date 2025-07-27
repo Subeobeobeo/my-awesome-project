@@ -12,30 +12,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* --- CSS CHO KHUNG ĐIỆN THOẠI ANDROID --- */
-        body {
-            background-color: #e9ecef;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
+        :root {
+          --primary-blue: #448AFF;
+          --light-bg: #F0F2F5;
+          --light-surface: #FFFFFF;
+          --text-primary: #050505;
+          --text-secondary: #65676B;
+          --border-color: #EBEDF0;
+          --yellow-accent: #FFC107;
+          --red-accent: #FF5252;
+          --dark-blue-bg: #0D1B3F;
         }
-        .phone-wrapper {
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
+
+        body {
+          background-color: #e9ecef;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+          padding: 20px;
+          box-sizing: border-box;
+          overflow: hidden;
         }
 
         .phone-wrapper {
-                transform: scale(0.82);
-                margin: 0 auto;
+          transform: scale(0.82);
+          margin: 0 auto;
         }
         .phone-wrapper h1 {
             color: #333;
