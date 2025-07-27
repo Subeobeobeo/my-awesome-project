@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Navigation ---
     function navigateTo(screenId) {
         screens.forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.classList.add('active');
+        }
         navButtons.forEach(b => {
             b.classList.toggle('active', b.dataset.target === screenId);
         });
@@ -52,12 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateExpBar() {
         const percentage = (state.exp / state.maxExp) * 100;
         expProgress.style.width = `${percentage}%`;
-        expText.textContent = `${state.exp} / ${state.maxExp} EXP`;
+        // expText.textContent = `${state.exp} / ${state.maxExp} EXP`; // This text is now hidden by CSS but logic remains
     }
 
     function addExp(amount) {
         state.exp += amount;
-        if (state.exp > state.maxExp) state.exp = state.maxExp; // Cap at max
+        if (state.exp > state.maxExp) state.exp = state.maxExp;
         updateExpBar();
     }
 
@@ -73,9 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.action-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const span = this.querySelector('span');
-            let count = parseInt(span.textContent);
+            let count = parseInt(span.textContent.match(/\d+/)[0]);
             count = (count === 0) ? 1 : 0; // Toggle between 0 and 1
-            span.textContent = count;
+            span.textContent = `(${count})`;
         });
     });
 
@@ -83,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const mapContainer = document.querySelector('.map-container');
     document.getElementById('safety-map-btn').addEventListener('click', () => {
         navigateTo('map-screen');
-        // Add some random footprints
         mapContainer.innerHTML = ''; // Clear old ones
         for(let i=0; i<5; i++) {
             const icon = document.createElement('i');
@@ -104,12 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderNotebook() {
         notebookList.innerHTML = '';
         if (state.savedAlerts.length === 0) {
-            notebookList.innerHTML = '<p>Chưa có cảnh báo nào được lưu.</p>';
+            notebookList.innerHTML = '<p class="list-item">Chưa có cảnh báo nào được lưu.</p>';
             return;
         }
         state.savedAlerts.forEach(alert => {
             const item = document.createElement('div');
-            item.className = 'notebook-item';
+            item.className = 'list-item notebook-item';
             item.innerHTML = `<p>${alert.text}</p><div class="time">Lưu lúc: ${alert.time}</div>`;
             notebookList.appendChild(item);
         });
@@ -128,8 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Widget Simulation ---
     document.getElementById('widget-search-btn').addEventListener('click', () => {
-        navigateTo('call-screen'); // Simulate opening app to search
-        document.querySelector('.search-box input').focus();
+        navigateTo('call-screen');
+        document.querySelector('#call-screen .search-box input').focus();
     });
 
     const widgetAlert = document.getElementById('widget-alert');
@@ -140,34 +142,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Initial App Load Logic ---
     function initializeApp() {
-        navigateTo('android-homescreen'); // Start at the simulated homescreen
+        navigateTo('android-homescreen');
         updateExpBar();
         
-        // Simulate a smart alert appearing on the widget after a delay
-        setTimeout(() => {
-            widgetAlert.classList.add('show');
-        }, 5000);
-        
-        // Simulate after-call popup for demonstration
-        setTimeout(() => {
-            showModal('after-call-popup');
-        }, 10000);
-
-        // Show welcome popup
-        setTimeout(() => {
-             showModal('welcome-popup');
-        }, 1500);
+        // Simulate events with timeouts
+        setTimeout(() => widgetAlert.classList.add('show'), 5000);
+        setTimeout(() => showModal('after-call-popup'), 10000);
+        setTimeout(() => showModal('welcome-popup'), 1500);
+        setTimeout(() => showModal('area-alert-popup'), 15000);
     }
     
     // --- General Notification Function ---
     function showNotification(message) {
+        const notifContainer = document.getElementById('popup-container');
+        const notifId = `notif-${Date.now()}`;
         const notif = document.createElement('div');
-        notif.className = 'notification show';
-        notif.textContent = message;
-        document.body.appendChild(notif);
+        notif.id = notifId;
+        notif.className = 'modal show';
+        notif.style.backgroundColor = 'transparent'; // Make modal background transparent
+        notif.innerHTML = `<div class="modal-content dark" style="width: auto; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);">${message}</div>`;
+        notifContainer.appendChild(notif);
         setTimeout(() => {
-            notif.remove();
-        }, 3000);
+            document.getElementById(notifId)?.remove();
+        }, 2500);
     }
 
     initializeApp();
