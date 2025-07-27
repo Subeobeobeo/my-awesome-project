@@ -21,7 +21,7 @@
         }
         .phone-wrapper {
             text-align: center;
-            transform: scale(0.85); /* Scale lại để vừa màn hình hơn */
+            transform: scale(0.82); /* Scale lại để vừa màn hình hơn */
         }
         .phone-wrapper h1 {
             color: #333;
@@ -71,6 +71,7 @@
         .app-container { width: 100%; height: 100%; position: relative; overflow: hidden; background-color: var(--light-bg); color: var(--text-primary); }
         .screen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; transition: opacity 0.2s; padding-bottom: 70px; overflow-y: auto; background-color: var(--light-bg); }
         .screen.active { opacity: 1; visibility: visible; }
+        .screen.fullscreen { padding-bottom: 0; }
         .hidden { display: none; }
         .list-container { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
         .list-item { background-color: var(--light-surface); color: var(--text-dark); padding: 15px; border-radius: 8px; }
@@ -87,14 +88,19 @@
         .user-avatar { width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-blue); color: white; display: flex; justify-content: center; align-items: center; font-weight: bold; }
         .search-box { background-color: #E9ECEF; border-radius: 25px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         .search-box input { background: none; border: none; color: var(--text-primary); width: 100%; outline: none; }
+        
+        /* --- Rank Card --- */
+        .rank-card { background-color: var(--light-surface); padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .rank-info { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+        .rank-info span:first-child { color: var(--primary-blue); }
+        .rank-info span:last-child { color: var(--text-secondary); }
+        .progress-bar { width: 100%; height: 6px; background-color: #E9ECEF; border-radius: 3px; }
+        .progress { height: 100%; background-color: var(--primary-blue); border-radius: 3px; width: 5%; transition: width 0.5s ease; }
+
         .quick-actions { display: flex; gap: 10px; margin-bottom: 20px; }
         .action-chip { background-color: #E9ECEF; color: var(--text-primary); border: none; border-radius: 20px; padding: 8px 15px; display: flex; align-items: center; gap: 8px; }
         .shortcut-card { background-color: var(--light-surface); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .shortcut-card button { background-color: var(--primary-blue); color: white; border: none; border-radius: 20px; padding: 8px 15px; font-weight: bold; }
-        .exp-bar-container { margin-bottom: 20px; }
-        .progress-bar { width: 100%; height: 6px; background-color: #E9ECEF; border-radius: 3px; }
-        .progress { height: 100%; background-color: var(--primary-blue); border-radius: 3px; width: 5%; transition: width 0.5s ease; }
-        .exp-text { display: none; }
         .history-title { margin-bottom: 10px; font-size: 1rem; }
         .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer; }
         .item-info { display: flex; align-items: center; gap: 15px; }
@@ -116,12 +122,12 @@
         .feed-content { font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; }
         .feed-actions { margin-top: 10px; display: flex; justify-content: space-around; border-top: 1px solid var(--border-color); padding-top: 8px; }
         .action-btn { background: none; border: none; color: #65676B; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 0.8rem; }
-        .fab { position: absolute; bottom: 90px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background-color: var(--primary-blue); color: white; border: none; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 50; }
-        .fab-notebook { bottom: 160px; background-color: var(--yellow-accent); }
-        .page-header.light { display: flex; align-items: center; gap: 15px; padding: 15px; background-color: var(--light-surface); color: var(--text-dark); border-bottom: 1px solid var(--border-color); }
+        .fab { position: absolute; bottom: 100px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background-color: var(--primary-blue); color: white; border: none; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 50; }
+        .fab-notebook { bottom: 170px; background-color: var(--yellow-accent); }
+        .page-header.light { display: flex; align-items: center; gap: 15px; padding: 15px; background-color: var(--light-surface); color: var(--text-dark); border-bottom: 1px solid var(--border-color); z-index: 10; position: relative; }
         .back-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); }
-        .map-container { width: 100%; height: calc(100% - 57px); background-image: url('https://i.imgur.com/gK6c7w3.png'); background-size: cover; background-position: center; position: relative; }
-        .footprint-icon { position: absolute; font-size: 2.5rem; color: var(--primary-blue); opacity: 0.9; }
+        .map-container { width: 100%; height: 100%; background-image: url('https://i.imgur.com/U8t5S2V.png'); background-size: cover; background-position: center; position: absolute; top: 0; left: 0; }
+        .footprint-icon { position: absolute; font-size: 2.5rem; color: var(--red-accent); opacity: 0.9; }
         .message-list, .block-content { padding: 15px; }
         .message-item { display: flex; align-items: center; gap: 15px; padding: 10px; border-radius: 8px; }
         .message-content { flex-grow: 1; }
@@ -245,21 +251,18 @@
                             <i class="fas fa-search"></i>
                             <input type="text" placeholder="Tìm kiếm một số">
                         </div>
-                        <div class="quick-actions">
-                            <button class="action-chip"><i class="fas fa-address-book"></i> Danh bạ</button>
-                            <button class="action-chip"><i class="fas fa-star"></i> Yêu thích</button>
-                        </div>
-                        <div class="shortcut-card">
-                            <div class="shortcut-info">
-                                <h4>Tạo Lối tắt Điện thoại</h4>
-                                <p>Thực hiện và tìm kiếm cuộc gọi nhanh chóng</p>
+                        <div class="rank-card">
+                            <div class="rank-info">
+                                <span>Vệ Binh Đồng</span>
+                                <span id="exp-text-main">50/1000 EXP</span>
                             </div>
-                            <button>Tạo ngay</button>
-                        </div>
-                        <div class="exp-bar-container">
                             <div class="progress-bar">
                                 <div id="exp-progress" class="progress"></div>
                             </div>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="action-chip"><i class="fas fa-address-book"></i> Danh bạ</button>
+                            <button class="action-chip"><i class="fas fa-star"></i> Yêu thích</button>
                         </div>
                         <h4 class="history-title">Gần đây</h4>
                         <div class="call-history">
@@ -360,12 +363,12 @@
                     </div>
 
                     <!-- Màn hình Bản đồ an toàn -->
-                    <div id="map-screen" class="screen">
-                        <div class="page-header light">
+                    <div id="map-screen" class="screen fullscreen">
+                        <div class="map-container"></div>
+                         <div class="page-header light" style="position: absolute; top: 0; width: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px);">
                             <button class="back-btn" data-target="community-screen"><i class="fas fa-arrow-left"></i></button>
                             <h3>Bản đồ an toàn</h3>
                         </div>
-                        <div class="map-container"></div>
                     </div>
                     
                     <!-- Màn hình Sổ tay an ninh -->
@@ -424,20 +427,21 @@
 
             const homescreen = document.getElementById('android-homescreen');
             const appWrapper = document.getElementById('app-wrapper');
-            const screens = appWrapper.querySelectorAll('.screen');
+            const screens = document.querySelectorAll('.screen');
+            const appScreens = appWrapper.querySelectorAll('.screen');
             const navButtons = appWrapper.querySelectorAll('.nav-btn');
             const modals = document.querySelectorAll('.modal');
             const modalCloseButtons = document.querySelectorAll('.modal-close-btn');
             
             function enterApp() {
-                homescreen.style.display = 'none';
+                homescreen.classList.remove('active');
                 appWrapper.classList.remove('hidden');
                 navigateTo('call-screen');
-                showModal('welcome-popup');
+                setTimeout(() => showModal('welcome-popup'), 500);
             }
 
             function navigateTo(screenId) {
-                screens.forEach(s => s.classList.remove('active'));
+                appScreens.forEach(s => s.classList.remove('active'));
                 const targetScreen = document.getElementById(screenId);
                 if (targetScreen) targetScreen.classList.add('active');
                 
@@ -476,9 +480,11 @@
             modalCloseButtons.forEach(btn => btn.addEventListener('click', hideModals));
 
             const expProgress = document.getElementById('exp-progress');
+            const expTextMain = document.getElementById('exp-text-main');
             function updateExpBar() {
                 const percentage = (state.exp / state.maxExp) * 100;
                 if(expProgress) expProgress.style.width = `${percentage}%`;
+                if(expTextMain) expTextMain.textContent = `${state.exp}/${state.maxExp} EXP`;
             }
 
             function addExp(amount) {
@@ -513,8 +519,8 @@
                     for(let i=0; i<5; i++) {
                         const icon = document.createElement('i');
                         icon.className = 'fas fa-shoe-prints footprint-icon';
-                        icon.style.top = `${Math.random() * 80 + 10}%`;
-                        icon.style.left = `${Math.random() * 80 + 10}%`;
+                        icon.style.top = `${Math.random() * 85 + 5}%`;
+                        icon.style.left = `${Math.random() * 85 + 5}%`;
                         mapContainer.appendChild(icon);
                     }
                 }
