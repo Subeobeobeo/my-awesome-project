@@ -177,7 +177,7 @@
                 <!-- NỘI DUNG ỨNG DỤNG BẮT ĐẦU TỪ ĐÂY -->
                 <div class="app-container">
                     <!-- Màn hình mô phỏng Android Widget -->
-                    <div id="android-homescreen" class="screen">
+                    <div id="android-homescreen" class="screen active">
                         <div class="android-background"></div>
                         <div class="widget-container">
                             <div class="wepu-widget">
@@ -206,7 +206,7 @@
                     </div>
 
                     <!-- Màn hình chính (Gọi) -->
-                    <div id="call-screen" class="screen active">
+                    <div id="call-screen" class="screen">
                         <div class="call-header">
                             <span>Hy vọng hôm nay bạn không bị làm phiền!</span>
                             <div class="header-icons">
@@ -376,7 +376,7 @@
 
                     <!-- Thanh điều hướng dưới cùng -->
                     <nav class="bottom-nav">
-                        <button class="nav-btn active" data-target="call-screen"><i class="fas fa-phone-alt"></i><span>Gọi</span></button>
+                        <button class="nav-btn" data-target="call-screen"><i class="fas fa-phone-alt"></i><span>Gọi</span></button>
                         <button class="nav-btn" data-target="message-screen"><i class="fas fa-comment-dots"></i><span>Tin nhắn</span></button>
                         <button class="nav-btn" data-target="block-screen"><i class="fas fa-shield-alt"></i><span>Chặn</span></button>
                         <button class="nav-btn" data-target="community-screen"><i class="fas fa-users"></i><span>Cộng đồng</span></button>
@@ -423,203 +423,204 @@
         </div>
     </div>
     <script>
-        // --- JAVASCRIPT CHO ỨNG DỤNG WEPU ---
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- State Management ---
-            const state = {
-                exp: 150,
-                maxExp: 1000,
-                savedAlerts: []
-            };
+        // --- JAVASCRIPT CHO ỨNG DỤNG WEPU (ĐÃ SỬA LỖI) ---
+        // Script được chạy ngay sau khi HTML được tải, không cần chờ sự kiện DOMContentLoaded
+        
+        // --- State Management ---
+        const state = {
+            exp: 150,
+            maxExp: 1000,
+            savedAlerts: []
+        };
 
-            // --- DOM Elements ---
-            const screens = document.querySelectorAll('.screen');
-            const navButtons = document.querySelectorAll('.nav-btn');
-            const modals = document.querySelectorAll('.modal');
-            const modalCloseButtons = document.querySelectorAll('.modal-close-btn');
+        // --- DOM Elements ---
+        const screens = document.querySelectorAll('.screen');
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const modals = document.querySelectorAll('.modal');
+        const modalCloseButtons = document.querySelectorAll('.modal-close-btn');
 
-            // --- Navigation ---
-            function navigateTo(screenId) {
-                screens.forEach(s => s.classList.remove('active'));
-                const targetScreen = document.getElementById(screenId);
-                if (targetScreen) {
-                    targetScreen.classList.add('active');
+        // --- Navigation ---
+        function navigateTo(screenId) {
+            screens.forEach(s => s.classList.remove('active'));
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+            navButtons.forEach(b => {
+                b.classList.toggle('active', b.dataset.target === screenId);
+            });
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+                if (target && target !== '#') {
+                    navigateTo(target);
                 }
-                navButtons.forEach(b => {
-                    b.classList.toggle('active', b.dataset.target === screenId);
-                });
-            }
-
-            navButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const target = button.dataset.target;
-                    if (target && target !== '#') {
-                        navigateTo(target);
-                    }
-                });
             });
-            
-            document.querySelectorAll('.back-btn').forEach(button => {
-                button.addEventListener('click', () => navigateTo(button.dataset.target));
-            });
-
-            // --- Modal/Popup Logic ---
-            function showModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if(modal) modal.classList.add('show');
-            }
-
-            function hideModals() {
-                modals.forEach(m => m.classList.remove('show'));
-            }
-
-            modalCloseButtons.forEach(btn => btn.addEventListener('click', hideModals));
-
-            // --- Gamification & EXP ---
-            const expProgress = document.getElementById('exp-progress');
-            
-            function updateExpBar() {
-                const percentage = (state.exp / state.maxExp) * 100;
-                if(expProgress) expProgress.style.width = `${percentage}%`;
-            }
-
-            function addExp(amount) {
-                state.exp += amount;
-                if (state.exp > state.maxExp) state.exp = state.maxExp;
-                updateExpBar();
-            }
-
-            const reportScamBtn = document.getElementById('report-scam-btn');
-            if(reportScamBtn) {
-                reportScamBtn.addEventListener('click', () => {
-                    hideModals();
-                    addExp(20);
-                    showNotification("Báo cáo thành công! Bạn nhận được 20 EXP.");
-                });
-            }
-            
-            const gamificationShieldBtn = document.getElementById('gamification-shield-btn');
-            if(gamificationShieldBtn) {
-                gamificationShieldBtn.addEventListener('click', () => navigateTo('gamification-screen'));
-            }
-
-            // --- Community Feed Actions ---
-            document.querySelectorAll('.action-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const span = this.querySelector('span');
-                    let count = parseInt(span.textContent.match(/\d+/)[0]);
-                    count = (count === 0) ? 1 : 0; // Toggle between 0 and 1
-                    span.textContent = `(${count})`;
-                });
-            });
-
-            // --- Safety Map ---
-            const mapContainer = document.querySelector('.map-container');
-            const safetyMapBtn = document.getElementById('safety-map-btn');
-            if(safetyMapBtn) {
-                safetyMapBtn.addEventListener('click', () => {
-                    navigateTo('map-screen');
-                    if(mapContainer) {
-                        mapContainer.innerHTML = ''; // Clear old ones
-                        for(let i=0; i<5; i++) {
-                            const icon = document.createElement('i');
-                            icon.className = 'fas fa-shoe-prints footprint-icon';
-                            icon.style.top = `${Math.random() * 80 + 10}%`;
-                            icon.style.left = `${Math.random() * 80 + 10}%`;
-                            mapContainer.appendChild(icon);
-                        }
-                    }
-                });
-            }
-
-            // --- Security Notebook ---
-            const notebookList = document.getElementById('notebook-list');
-            const notebookBtn = document.getElementById('notebook-btn');
-            if(notebookBtn) {
-                notebookBtn.addEventListener('click', () => {
-                    navigateTo('notebook-screen');
-                    renderNotebook();
-                });
-            }
-
-            function renderNotebook() {
-                if(!notebookList) return;
-                notebookList.innerHTML = '';
-                if (state.savedAlerts.length === 0) {
-                    notebookList.innerHTML = '<p class="list-item">Chưa có cảnh báo nào được lưu.</p>';
-                    return;
-                }
-                state.savedAlerts.forEach(alert => {
-                    const item = document.createElement('div');
-                    item.className = 'list-item notebook-item';
-                    item.innerHTML = `<p>${alert.text}</p><div class="time">Lưu lúc: ${alert.time}</div>`;
-                    notebookList.appendChild(item);
-                });
-            }
-
-            const saveToNotebookBtn = document.getElementById('save-to-notebook-btn');
-            if(saveToNotebookBtn) {
-                saveToNotebookBtn.addEventListener('click', () => {
-                    const alertText = document.getElementById('alert-content-text').textContent;
-                    const now = new Date();
-                    state.savedAlerts.push({
-                        text: alertText,
-                        time: now.toLocaleTimeString('vi-VN') + ' ' + now.toLocaleDateString('vi-VN')
-                    });
-                    hideModals();
-                    showNotification("Đã lưu vào Sổ tay an ninh!");
-                });
-            }
-
-            // --- Widget Simulation ---
-            const widgetSearchBtn = document.getElementById('widget-search-btn');
-            if(widgetSearchBtn) {
-                widgetSearchBtn.addEventListener('click', () => {
-                    navigateTo('call-screen');
-                    const searchInput = document.querySelector('#call-screen .search-box input');
-                    if(searchInput) searchInput.focus();
-                });
-            }
-
-            const widgetAlert = document.getElementById('widget-alert');
-            if(widgetAlert) {
-                widgetAlert.addEventListener('click', () => {
-                    navigateTo('call-screen');
-                    showModal('smart-alert-popup');
-                });
-            }
-
-            // --- Initial App Load Logic ---
-            function initializeApp() {
-                navigateTo('android-homescreen');
-                updateExpBar();
-                
-                // Simulate events with timeouts
-                setTimeout(() => { if(widgetAlert) widgetAlert.classList.add('show'); }, 5000);
-                setTimeout(() => showModal('after-call-popup'), 10000);
-                setTimeout(() => showModal('welcome-popup'), 1500);
-                setTimeout(() => showModal('area-alert-popup'), 15000);
-            }
-            
-            // --- General Notification Function ---
-            function showNotification(message) {
-                const notifContainer = document.getElementById('popup-container');
-                if(!notifContainer) return;
-
-                const notifId = `notif-${Date.now()}`;
-                const notif = document.createElement('div');
-                notif.id = notifId;
-                notif.className = 'modal show';
-                notif.style.backgroundColor = 'transparent';
-                notif.innerHTML = `<div class="modal-content dark" style="width: auto; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);">${message}</div>`;
-                notifContainer.appendChild(notif);
-                setTimeout(() => {
-                    document.getElementById(notifId)?.remove();
-                }, 2500);
-            }
-
-            initializeApp();
         });
+        
+        document.querySelectorAll('.back-btn').forEach(button => {
+            button.addEventListener('click', () => navigateTo(button.dataset.target));
+        });
+
+        // --- Modal/Popup Logic ---
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if(modal) modal.classList.add('show');
+        }
+
+        function hideModals() {
+            modals.forEach(m => m.classList.remove('show'));
+        }
+
+        modalCloseButtons.forEach(btn => btn.addEventListener('click', hideModals));
+
+        // --- Gamification & EXP ---
+        const expProgress = document.getElementById('exp-progress');
+        
+        function updateExpBar() {
+            const percentage = (state.exp / state.maxExp) * 100;
+            if(expProgress) expProgress.style.width = `${percentage}%`;
+        }
+
+        function addExp(amount) {
+            state.exp += amount;
+            if (state.exp > state.maxExp) state.exp = state.maxExp;
+            updateExpBar();
+        }
+
+        const reportScamBtn = document.getElementById('report-scam-btn');
+        if(reportScamBtn) {
+            reportScamBtn.addEventListener('click', () => {
+                hideModals();
+                addExp(20);
+                showNotification("Báo cáo thành công! Bạn nhận được 20 EXP.");
+            });
+        }
+        
+        const gamificationShieldBtn = document.getElementById('gamification-shield-btn');
+        if(gamificationShieldBtn) {
+            gamificationShieldBtn.addEventListener('click', () => navigateTo('gamification-screen'));
+        }
+
+        // --- Community Feed Actions ---
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const span = this.querySelector('span');
+                let count = parseInt(span.textContent.match(/\d+/)[0]);
+                count = (count === 0) ? 1 : 0; // Toggle between 0 and 1
+                span.textContent = `(${count})`;
+            });
+        });
+
+        // --- Safety Map ---
+        const mapContainer = document.querySelector('.map-container');
+        const safetyMapBtn = document.getElementById('safety-map-btn');
+        if(safetyMapBtn) {
+            safetyMapBtn.addEventListener('click', () => {
+                navigateTo('map-screen');
+                if(mapContainer) {
+                    mapContainer.innerHTML = ''; // Clear old ones
+                    for(let i=0; i<5; i++) {
+                        const icon = document.createElement('i');
+                        icon.className = 'fas fa-shoe-prints footprint-icon';
+                        icon.style.top = `${Math.random() * 80 + 10}%`;
+                        icon.style.left = `${Math.random() * 80 + 10}%`;
+                        mapContainer.appendChild(icon);
+                    }
+                }
+            });
+        }
+
+        // --- Security Notebook ---
+        const notebookList = document.getElementById('notebook-list');
+        const notebookBtn = document.getElementById('notebook-btn');
+        if(notebookBtn) {
+            notebookBtn.addEventListener('click', () => {
+                navigateTo('notebook-screen');
+                renderNotebook();
+            });
+        }
+
+        function renderNotebook() {
+            if(!notebookList) return;
+            notebookList.innerHTML = '';
+            if (state.savedAlerts.length === 0) {
+                notebookList.innerHTML = '<p class="list-item">Chưa có cảnh báo nào được lưu.</p>';
+                return;
+            }
+            state.savedAlerts.forEach(alert => {
+                const item = document.createElement('div');
+                item.className = 'list-item notebook-item';
+                item.innerHTML = `<p>${alert.text}</p><div class="time">Lưu lúc: ${alert.time}</div>`;
+                notebookList.appendChild(item);
+            });
+        }
+
+        const saveToNotebookBtn = document.getElementById('save-to-notebook-btn');
+        if(saveToNotebookBtn) {
+            saveToNotebookBtn.addEventListener('click', () => {
+                const alertText = document.getElementById('alert-content-text').textContent;
+                const now = new Date();
+                state.savedAlerts.push({
+                    text: alertText,
+                    time: now.toLocaleTimeString('vi-VN') + ' ' + now.toLocaleDateString('vi-VN')
+                });
+                hideModals();
+                showNotification("Đã lưu vào Sổ tay an ninh!");
+            });
+        }
+
+        // --- Widget Simulation ---
+        const widgetSearchBtn = document.getElementById('widget-search-btn');
+        if(widgetSearchBtn) {
+            widgetSearchBtn.addEventListener('click', () => {
+                navigateTo('call-screen');
+                const searchInput = document.querySelector('#call-screen .search-box input');
+                if(searchInput) searchInput.focus();
+            });
+        }
+
+        const widgetAlert = document.getElementById('widget-alert');
+        if(widgetAlert) {
+            widgetAlert.addEventListener('click', () => {
+                navigateTo('call-screen');
+                showModal('smart-alert-popup');
+            });
+        }
+
+        // --- Initial App Load Logic ---
+        function initializeApp() {
+            // Đặt màn hình mặc định trong HTML bằng class 'active'
+            // navigateTo('android-homescreen'); // Không cần thiết nữa
+            updateExpBar();
+            
+            // Simulate events with timeouts
+            setTimeout(() => { if(widgetAlert) widgetAlert.classList.add('show'); }, 5000);
+            setTimeout(() => showModal('after-call-popup'), 10000);
+            setTimeout(() => showModal('welcome-popup'), 1500);
+            setTimeout(() => showModal('area-alert-popup'), 15000);
+        }
+        
+        // --- General Notification Function ---
+        function showNotification(message) {
+            const notifContainer = document.getElementById('popup-container');
+            if(!notifContainer) return;
+
+            const notifId = `notif-${Date.now()}`;
+            const notif = document.createElement('div');
+            notif.id = notifId;
+            notif.className = 'modal show';
+            notif.style.backgroundColor = 'transparent';
+            notif.innerHTML = `<div class="modal-content dark" style="width: auto; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);">${message}</div>`;
+            notifContainer.appendChild(notif);
+            setTimeout(() => {
+                document.getElementById(notifId)?.remove();
+            }, 2500);
+        }
+
+        initializeApp();
     </script>
 </body>
 </html>
