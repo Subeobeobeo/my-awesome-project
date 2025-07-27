@@ -3,118 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WePu - Nền tảng An Toàn Cộng Đồng</title>
-    <!-- Liên kết đến file CSS bên ngoài -->
-    <link rel="stylesheet" href="style.css">
-    <!-- Thêm thư viện icon Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Trải nghiệm ứng dụng WePu</title>
+    <style>
+        body {
+            background-color: #e9ecef;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .phone-wrapper {
+            text-align: center;
+        }
+
+        .phone-wrapper h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border: 16px solid black;
+            border-radius: 54px;
+            box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+            position: relative;
+            background-color: #fff;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 38px;
+            overflow: hidden;
+        }
+
+        .phone-screen iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 210px;
+            height: 30px;
+            background-color: black;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 2;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- 1. Header: Chứa Logo và các liên kết điều hướng -->
-    <header class="main-header">
-        <div class="container">
-            <a href="#" class="logo">WePu</a>
-            <nav class="main-nav">
-                <a href="#dashboard">Bảng Điều Khiển</a>
-                <a href="#community-feed">Cộng Đồng</a>
-                <a href="#report">Gửi Báo Cáo</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- 2. Hero Section: Phần giới thiệu chính -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>Bảo vệ bạn, xây dựng cộng đồng an toàn</h1>
-            <p>Nền tảng chia sẻ và cảnh báo thông tin lừa đảo theo thời gian thực.</p>
-        </div>
-    </section>
-
-    <!-- 3. Dashboard Section: Hiển thị các tính năng chính -->
-    <main id="dashboard" class="dashboard">
-        <div class="container">
-            <h2 class="section-title">Bảng Điều Khiển</h2>
-            <div class="feature-grid">
-                <!-- Tính năng 1: Bản Đồ An Toàn -->
-                <article class="feature-card" data-feature="map">
-                    <div class="card-icon"><i class="fas fa-map-marked-alt"></i></div>
-                    <h3>Bản Đồ An Toàn</h3>
-                    <p>Xem các cảnh báo lừa đảo trực quan trên bản đồ theo vị trí của bạn.</p>
-                </article>
-                <!-- Tính năng 2: Cảnh Báo Thông Minh -->
-                <article class="feature-card" data-feature="alert">
-                    <div class="card-icon"><i class="fas fa-bell"></i></div>
-                    <h3>Cảnh Báo Thông Minh</h3>
-                    <p>Nhận cảnh báo mới nhất từ AI, phân tích dựa trên các báo cáo cộng đồng.</p>
-                </article>
-                <!-- Tính năng 3: Sổ Tay An Ninh -->
-                <article class="feature-card" data-feature="notebook">
-                    <div class="card-icon"><i class="fas fa-book-shield"></i></div>
-                    <h3>Sổ Tay An Ninh</h3>
-                    <p>Lưu lại các cảnh báo quan trọng và quản lý thông tin cá nhân an toàn.</p>
-                </article>
+    <div class="phone-wrapper">
+        <h1>Trải nghiệm ứng dụng WePu</h1>
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <!-- Iframe sẽ tải nội dung từ file app.html -->
+                <iframe src="app.html"></iframe>
             </div>
         </div>
-    </main>
-    
-    <!-- 4. Community Feed Section -->
-    <section id="community-feed" class="community-feed">
-        <div class="container">
-            <h2 class="section-title">Feed Báo Cáo Cộng Đồng</h2>
-            <div class="feed-list">
-                <!-- Báo cáo mẫu 1 -->
-                <div class="feed-item">
-                    <p><strong>Tài khoản "Shop Xinh"</strong> lừa đảo chuyển khoản cọc mua hàng. Mọi người cẩn thận với số điện thoại 09xx.xxx.xxx nhé!</p>
-                    <div class="feed-actions">
-                        <span><i class="fas fa-thumbs-up"></i> 15 Thích</span>
-                        <span><i class="fas fa-comment"></i> 4 Bình luận</span>
-                        <span><i class="fas fa-share"></i> Chia sẻ</span>
-                    </div>
-                </div>
-                <!-- Báo cáo mẫu 2 -->
-                <div class="feed-item">
-                    <p>Cảnh báo cuộc gọi mạo danh công an yêu cầu cung cấp thông tin cá nhân để "điều tra". Tuyệt đối không làm theo.</p>
-                    <div class="feed-actions">
-                        <span><i class="fas fa-thumbs-up"></i> 32 Thích</span>
-                        <span><i class="fas fa-comment"></i> 9 Bình luận</span>
-                        <span><i class="fas fa-share"></i> Chia sẻ</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. Report Form Section: Form để người dùng gửi báo cáo -->
-    <section id="report" class="contact">
-        <div class="container">
-            <h2 class="section-title">Gửi Báo Cáo / Góp Ý</h2>
-            <form id="contact-form" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Tiêu đề báo cáo</label>
-                    <input type="text" id="name" name="name" required placeholder="Vd: Lừa đảo việc làm online">
-                </div>
-                <div class="form-group">
-                    <label for="message">Nội dung chi tiết</label>
-                    <textarea id="message" name="message" rows="5" required placeholder="Mô tả chi tiết về vụ việc, đối tượng, số điện thoại..."></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Gửi Báo Cáo</button>
-            </form>
-        </div>
-    </section>
-    
-    <!-- 6. Footer: Phần chân trang -->
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 WePu. Vì một cộng đồng an toàn hơn.</p>
-        </div>
-    </footer>
-
-    <!-- Thẻ div ẩn dùng để hiển thị thông báo -->
-    <div id="notification" class="notification"></div>
-
-    <!-- Liên kết đến file JavaScript -->
-    <script src="script.js"></script>
+    </div>
 
 </body>
 </html>
